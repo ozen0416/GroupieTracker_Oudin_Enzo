@@ -3,3 +3,7 @@ Sélectionner de l'API --> sur les amiibo
 Le contenu du site web sera + centré sur super smash bros ultimate (les persos que j'aime / mes mains / meilleurs persos à jouer)
 Création du git + création du main
 Import du JSON en structure
+
+Jour 2 :
+Liaison entre go et web
+Avancement sur la disposition du site

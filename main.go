@@ -5,25 +5,15 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"text/template"
 	"time"
 )
 
 type Smash struct {
 	Amiibo []struct {
-		AmiiboSeries string `json:"amiiboSeries"`
-		Character    string `json:"character"`
-		GameSeries   string `json:"gameSeries"`
-		Head         string `json:"head"`
-		Image        string `json:"image"`
-		Name         string `json:"name"`
-		Release      struct {
-			Au string `json:"au"`
-			Eu string `json:"eu"`
-			Jp string `json:"jp"`
-			Na string `json:"na"`
-		} `json:"release"`
-		Tail string `json:"tail"`
-		Type string `json:"type"`
+		GameSeries string `json:"gameSeries"`
+		Image      string `json:"image"`
+		Name       string `json:"name"`
 	} `json:"amiibo"`
 }
 
@@ -58,23 +48,18 @@ func main() {
 	var temp Smash
 	total := json.Unmarshal(body, &temp)
 	for i := 0; i < len(temp.Amiibo); i++ {
-		fmt.Println(temp.Amiibo[i].Name)
+		fmt.Println(temp.Amiibo[i])
 	}
 
 	if total != nil {
 		fmt.Println(total)
 	}
 
-	// tmpl := template.Must(template.ParseFiles("index.html"))
+	tmpl := template.Must(template.ParseFiles("templates/index.html", "templates/test.html"))
 
-	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	data := Smash{
-	// 		Amiibo: {
-	// 			{Character: temp.Amiibo[].Character, temp.Amiibo[10].Name},
-	// 		},
-	// 	}
-	// 	tmpl.Execute(w, data)
-	// })
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		tmpl.Execute(w, temp.Amiibo)
+	})
 
-	// http.ListenAndServe(":80", nil)
+	http.ListenAndServe(":80", nil)
 }

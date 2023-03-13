@@ -7,3 +7,7 @@ Import du JSON en structure
 Jour 2 :
 Liaison entre go et web
 Avancement sur la disposition du site
+
+Jour 3:
+Liaison (enfin) entre API GO et WEB
+Démarrage du front

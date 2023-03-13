@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.imgAmiibo {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+}
+
+header {
+    border: 10px solid black;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.test {
+    background-image: url("../pictures/Amiibosvg.png");
+}

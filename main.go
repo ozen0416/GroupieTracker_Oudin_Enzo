@@ -2,14 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"io"
+	"html/template"
+	"io/ioutil"
+	"log"
 	"net/http"
-	"text/template"
-	"time"
 )
 
-type Smash struct {
+type AmiiboList struct {
 	Amiibo []struct {
 		GameSeries string `json:"gameSeries"`
 		Image      string `json:"image"`
@@ -18,48 +17,35 @@ type Smash struct {
 }
 
 func main() {
-	url := "https://amiiboapi.com/api/amiibo/"
 
-	timeClient := http.Client{
-		Timeout: time.Second * 2,
-	}
-
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	res, err := http.Get("https://amiiboapi.com/api/amiibo/")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 
-	req.Header.Set("User-Agent", "spacecount-total")
+	defer res.Body.Close()
 
-	res, getErr := timeClient.Do(req)
-	if getErr != nil {
-		fmt.Println(getErr)
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	if res.Body != nil {
-		defer res.Body.Close()
-	}
+	var Amiibo AmiiboList
 
-	body, readErr := io.ReadAll(res.Body)
-	if readErr != nil {
-		fmt.Println(readErr)
-	}
+	json.Unmarshal(body, &Amiibo)
 
-	var temp Smash
-	total := json.Unmarshal(body, &temp)
-	for i := 0; i < len(temp.Amiibo); i++ {
-		fmt.Println(temp.Amiibo[i])
-	}
-
-	if total != nil {
-		fmt.Println(total)
-	}
-
-	tmpl := template.Must(template.ParseFiles("templates/index.html", "templates/test.html"))
+	tmpl := template.Must(template.ParseFiles("templates/index.html"))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		tmpl.Execute(w, temp.Amiibo)
+		for _, i := range Amiibo.Amiibo[0].Name {
+			tmpl.Execute(w, i)
+		}
+
 	})
 
+	fs := http.FileServer(http.Dir("style"))
+	http.Handle("/style/", http.StripPrefix("/style/", fs))
+
 	http.ListenAndServe(":80", nil)
+
 }

@@ -11,3 +11,6 @@ Avancement sur la disposition du site
 Jour 3:
 Liaison (enfin) entre API GO et WEB
 Démarrage du front
+
+Jour 4:
+Amélioration du front et du back

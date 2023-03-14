@@ -34,17 +34,18 @@ func main() {
 
 	json.Unmarshal(body, &Amiibo)
 
-	tmpl := template.Must(template.ParseFiles("templates/index.html"))
+	templates := []string{
+		"templates/index.html",
+		"templates/header.html",
+		"templates/cards.html"}
 
+	tmpl := template.Must(template.ParseFiles(templates...))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		for _, i := range Amiibo.Amiibo[0].Name {
-			tmpl.Execute(w, i)
-		}
-
+		tmpl.Execute(w, Amiibo.Amiibo)
 	})
 
-	fs := http.FileServer(http.Dir("style"))
-	http.Handle("/style/", http.StripPrefix("/style/", fs))
+	fs := http.FileServer(http.Dir("assets"))
+	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.ListenAndServe(":80", nil)
 

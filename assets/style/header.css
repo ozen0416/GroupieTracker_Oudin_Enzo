@@ -1,0 +1,41 @@
+.amiibo-logo {
+    width: 15%;
+    height: 11%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 8px 8px;
+}
+
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content:space-evenly;
+    border: 1px solid red;
+    position: fixed;
+    top:0;
+    height: 100px;
+    width: 100%;
+    background-color: red;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    size: 15%;
+    transition: 0.4s;
+    text-transform: uppercase;
+}
+
+a:hover {
+    transform: rotate(5deg) scale(1.2);
+    font-weight: 900;
+}
+
+a:not(:hover) {
+    transition: 0.6s;
+}
+
+.space {
+    height: 100px;
+}
